@@ -23,18 +23,24 @@ server.listen(config.port, () => {
 });
 
 io.on('connection', (socket) => {
+
     console.log("socket connected: " + socket.id);
-    //io.emit("chat", "new client: " + socket.id);
+
+    //se viene mandato un messaggio dal client
     socket.on('message', (message) => {
         const response = (userList.find( user => user.socketID == socket.id).name) + ': ' + message;
         console.log(response);
         io.emit("chat", response);
     });
+
+    //se il client fa il loigin
     socket.on("isLogged", (username) => {
         userList.push({ socketID: socket.id, name: username });
         io.emit("list", userList);
         console.log(userList)
      })
+
+     //se il client si disconnette
      socket.on("disconnect", () => {
         userList = userList.filter( user => user.socketID != socket.id)
         console.log(userList)
