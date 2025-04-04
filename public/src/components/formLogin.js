@@ -10,12 +10,12 @@ export function createForm(parentElement, pubSub) {
                                             <label for="username" class="form-label">Username</label>
                                             <input type="text" class="form-control" id="username" name="username" required>
                                         </div>
-                                        <button id="loginSubmit" type="button" class="btn btn-primary w-100">Submit</button>
+                                        <button id="submit" type="button" class="btn btn-primary w-100">Submit</button>
                                     </form>
                                 </div>
                             </div>`;
 
-            document.getElementById("loginSubmit").onclick = async () => {
+            document.getElementById("submit").onclick = async () => {
                 const username = document.getElementById("username").value;
                 pubSub.publish("isLogged", username);
                 location.href = "#chat";
