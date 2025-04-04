@@ -3,7 +3,7 @@ export function createForm(parentElement, pubSub) {
     return {
         render: function () {
             parentElement.innerHTML = `<div class="d-flex justify-content-center align-items-center">
-                                <div class="card shadow-lg p-4" style="width: 22rem;">
+                                <div class="card shadow-sm p-4" style="width: 22rem;">
                                     <h3 class="text-center mb-3">Login</h3>
                                     <form>
                                         <div class="mb-3">
