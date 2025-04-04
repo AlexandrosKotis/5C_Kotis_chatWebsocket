@@ -28,10 +28,13 @@ io.on('connection', (socket) => {
 
     //se viene mandato un messaggio dal client
     socket.on('message', (message) => {
-        const response = (userList.find( user => user.socketID == socket.id).name) + ': ' + message;
-        console.log(response);
-        io.emit("chat", response);
-    });
+        const user = userList.find(u => u.socketID === socket.id);
+        if (user) {
+            const res = user.name + ": " + message;
+            console.log(res);
+            io.emit("chat", res);
+        }
+    });    
     
 
     //se il client fa il loigin
@@ -42,14 +45,11 @@ io.on('connection', (socket) => {
      })
 
      //se il client si disconnette
-     socket.on("disconnect", function() { 
-        userList = userList.reduce((acc, user) => {
-            if (user.socketID !== socket.id) acc.push(user);
-            return acc;
-        }, []);
-        console.log(userList);
+     socket.on("disconnect", () => {
+        userList = userList.filter(user => user.socketID != socket.id)
+        io.emit("list", userList);
         console.log("socket disconnected: " + socket.id);
-    });
+    })
     
 });
 
