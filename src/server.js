@@ -6,7 +6,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const { Server } = require('socket.io');
 const config = JSON.parse(fs.readFileSync(path.join(__dirname, "../config.json")));
-const userList = [];
+let userList = [];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,13 +27,10 @@ io.on('connection', (socket) => {
     console.log("socket connected: " + socket.id);
 
     //se viene mandato un messaggio dal client
-    socket.on("disconnect", function() { 
-        userList = userList.reduce((acc, user) => {
-            if (user.socketID !== socket.id) acc.push(user);
-            return acc;
-        }, []);
-        console.log(userList);
-        console.log("socket disconnected: " + socket.id);
+    socket.on('message', (message) => {
+        const response = (userList.find( user => user.socketID == socket.id).name) + ': ' + message;
+        console.log(response);
+        io.emit("chat", response);
     });
     
 
